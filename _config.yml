@@ -35,6 +35,7 @@ instructor-email:
 helper:
 
 setup_docs:
+  - "text_editor.md"
 
 # Details about the lessons
 lessons:
