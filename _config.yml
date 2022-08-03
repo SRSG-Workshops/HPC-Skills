@@ -2,16 +2,16 @@
 # Values for this workshop.
 #------------------------------------------------------------
 # What kind of thing is this ("workshop" or "course")?
-kind: "workshop"
+kind: "course"
 
 # Overall title for the Workshop.
 # This variable is used to (optionally) add a title in the "jumbotron"
 # (the grey box at the top of the page), and to the extra pages.
-title: "TBC Workshop Title"
-form_title: "TBC+Workshop+Title" # This is required for the surveys
+title: "DiRAC Essentials Course"
+form_title: "DiRAC+Essentials+Course" # This is required for the surveys
 
 # Email address, no mailto:
-email: "rsginfo@soton.ac.uk"
+email: "someone@dirac.ed.ac.uk"
 
 # Specify the location of the workshop
 venue: "TBC"           # name of location use "online" if online
@@ -31,86 +31,42 @@ enddate: "TBC"          # e.g. YYYY-MM-DD
 # Specify the details of the instructors and helpers
 # Can be list, or single string
 instructor:
-  - "Instructor 1"
-  - "Instructor 2"
 instructor-email:
-  - "instructor1@domain.com"
-  - "instructor2@domain.com"
 helper:
-  - "Helper 1"
-  - "Helper 2"
 
 setup_docs:
-  - remote_desktop.md
 
 # Details about the lessons
 lessons:
-  - title: Best Practices in Data Organisation Using Spreadsheets
-    gh-name: spreadsheets
+  - title: "Bash Shell: Using the Command Line"
+    gh-name: dirac-bash-command-line
     type: episode
     branch: main
-    date: 13 January 2022
-    start-time: 15:00
     order: 1
 
-  - title: Data Cleaning with OpenRefine
-    gh-name: openrefine-data-cleaning
+  - title: "Version Control with Git"
+    gh-name: dirac-version-control
     type: episode
     branch: main
-    date: 14 January 2022
-    start-time: 15:00
     order: 2
 
-  - title: Managing Academic Software Development
-    gh-name: project-novice
+  - title: "Principles of Software Engineering"
+    gh-name: dirac-software-engineering
     type: episode
     branch: main
-    date: 10 January 2022
-    start-time: 9:30 am
     order: 3
 
-  - title: Automating Tasks with the Unix Shell  # Lesson title
-    org-name: Southampton-RSG-Training           # Name of the GitHub organisation (or individual) the lesson is in defaults to Southampton-RSG-Training
-    gh-name: shell-novice                        # Name of the GitHub repository for the lesson at https://github:com/{org-name}:
-    type: episode                                # Currently only 'episode' or 'episode_r' is valid
-    branch: main                                 # Set the branch of the repository to use, useful for lesson customization
-    date: 8 January 2022                         # The date of the lesson                   # date and start-time are required for z
-    start-time: 10:30 am                         # The start time of the lesson             # 'kind: workshop'
-    order: 4                                     # The position of the lesson in the course # order is required for 'kind: course'
-
-  - title: Version Control with git
-    gh-name: git-novice
+  - title: "Testing, Documenting, and Reviewing Code"
+    gh-name: dirac-test-document-review
     type: episode
     branch: main
-    date: 9 January 2022
-    start-time: 8:30 am
+    order: 4
+
+  - title: "Principles of Codes Scaling"
+    gh-name: dirac-code-scaling
+    type: episode
+    branch: main
     order: 5
-
-  - title: Building Programs with Python
-    gh-name: python-novice
-    type: episode
-    branch: main
-    date:
-      - 11 January 2022
-      - 12 January 2022
-    start-time:
-      - 10:00 am
-      - 10:00 am
-    order: 6
-
-#  - title: Data Analysis and Visualization in R
-#    gh-name: r-novice
-#    type: episode_r
-#    branch: main
-#    date:
-#      - 15 January 2022
-#      - 16 January 2022
-#      - 17 January 2022
-#    start-time:
-#      - 15:00
-#      - 15:00
-#      - 15:00
-#    order: 7
 
 ###
 # It is unlikely you need to modify the values below this line
