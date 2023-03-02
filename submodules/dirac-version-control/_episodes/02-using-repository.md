@@ -1,6 +1,6 @@
 ---
 title: "Using a Repository"
-slug: dirac-version-control-using-repository
+slug: DiRAC-version-control-using-repository
 teaching: 10
 exercises: 0
 questions:
@@ -17,13 +17,82 @@ keypoints:
 
 # Creating a Repository
 
-A **repository** is a directory that is under **version control** - it can track changes to files within it. Git also makes it easy to sync up a **local repository** on your computer with a **remote repository** on the internet (or intranet!). 
+A **repository** is a directory that is under **version control** - it can track changes to files within it. Git also makes it easy to sync up a **local repository** on your computer (or DiRAC server) with a **remote repository** on the internet.
+
+
+## Setting up an SSH Key
+
+In this episode we'll be creating a new repository on GitHub then downloading and using that repository on DiRAC. In order to do that, we'll need a way to gain access to our repository from the DiRAC server. Just as we needed an SSH key to connect from our computer to the DiRAC server, we need an SSH key to connect from the DiRAC server to GitHub, so let's create a new one.
+
+On our terminal connected to DiRAC, we can create one on the command line as before - just go with the defaults for every option:
+
+~~~
+$ ssh-keygen -t rsa 
+~~~
+{: .bash}
+
+~~~
+Generating public/private rsa key pair.
+Enter file in which to save the key (/cosma/home/ds007/dc-mang1/.ssh/id_rsa): 
+Enter passphrase (empty for no passphrase): 
+Enter same passphrase again: 
+Your identification has been saved in /cosma/home/ds007/dc-mang1/.ssh/id_rsa.
+Your public key has been saved in /cosma/home/ds007/dc-mang1/.ssh/id_rsa.pub.
+The key fingerprint is:
+SHA256:ltRWwH/GJxLDlndQLmtR4LbprhhVjjFbc5ZYoeYiFc8 dc-mang1@login6a.pri.cosma7.alces.network
+The key's randomart image is:
++---[RSA 2048]----+
+|         ..+..o*+|
+|         ...X.=oo|
+|        . o+oEOo+|
+|       . o. =X=X.|
+|        S. .+=*o |
+|       .  ...o   |
+|          .   .  |
+|           o .   |
+|          . ...  |
++----[SHA256]-----+
+~~~
+{: .output}
+
+Now we've generated a key, we can add this to GitHub and register the key there. First, visit [GitHub](https://github.com), and make sure you've signed in to your account. Once you're signed in, go to [GitHub > Settings > SSH and GPG keys > Add new](https://github.com/settings/ssh/new), and you should see this:
+
+![Add New SSH Key]({{ site.url }}{{ site.baseurl }}/fig/02-using-repository/ssh.png)
+
+We need to fill in the details. Give the key a title like "DiRAC SSH key", and then paste your **public key** into the key box - we can find it in our `~/.ssh` folder:
+
+~~~
+$ ls ~/.ssh
+~~~
+{: .bash}
+
+~~~
+id_rsa  id_rsa.pub  known_hosts
+~~~
+{: .output}
+
+You want to copy the contents of the `.pub` file, which you can display with:
+
+~~~
+$ cat ~/.ssh/id_rsa.pub
+~~~
+{: .language-bash}
+
+~~~
+ssh-rsa <SNIPPED FOR SECURITY> dc-mang1@login6a.pri.cosma7.alces.network
+~~~
+{: .output}
+
+**Make sure you copy the `.pub` file and not the private key!** Your private key lives on your machine and is never shared with anyone else. Then click **Add key**.
+
 
 ## Using a Template
 
-We're going to work with some pre-existing template code, that's already stored in a repository. The first thing we need to do is create our own copy of that template, which we can do on [GitHub](https://github.com). First, visit [GitHub](https://github.com), and make sure you've signed in to your account.
+Now let's create a new repository for us to work on.
 
-Once you're signed in, [go to our template repository](https://github.com/Southampton-RSG-Training/dirac-version-control-template) and select **Use this template**:
+For convenience, we're going to work with some pre-existing template code that's already stored in a repository. The first thing we need to do is create our own copy of that template, which we can do on [GitHub](https://github.com).
+
+[Go to our template repository](https://github.com/Southampton-RSG-Training/dirac-version-control-template) and select **Use this template**:
 
 ![Use Template]({{ site.url }}{{ site.baseurl }}/fig/02-using-repository/template-copy.png)
 
@@ -37,17 +106,68 @@ We should get prompted to give details for what we'd like our copy of the templa
 > A major advantage of this is if you leave academia, or you switch institution and forget to update the email on your GitHub account before you lose your old one, your work won't be lost forever!
 {: .callout}
 
-After a brief wait, GitHub will have created a **remote repository** - a copy of the files and their history stored on GitHub's servers. We want to copy that to our local machine, which we do using `git clone`. Click on the **code** button, and you should have a choice of ways to copy the code. Select **SSH**, then click the copy button to copy the repository's URL:
+After a brief wait, GitHub will have created a **remote repository** - a copy of the files and their history stored on GitHub's servers.
+
+
+## Cloning the Repository
+
+Next, from the new GitHub repository click on the **code** button, and you should have a choice of ways to copy the code. Select **SSH**, then click the copy button to copy the repository's URL:
 
 ![Copy Repository URL]({{ site.url }}{{ site.baseurl }}/fig/02-using-repository/repository-url.png)
 
+Now we'll download a copy of the repository to our server.
+
+> ## SSH vs HTTPS
+>
+> **Make sure you select SSH!** Whilst Git supports both **HTTPS** and **SSH**, **GitHub** will only let you *download* with **HTTPS**, as it's less secure.
+{: .caution}
+
+We have our SSH key in place and have created our new repository from the template, so we can finally clone the repository to the DiRAC server:
+
 ~~~
-$ git clone git@github.com:smangham/climate-analysis.git
+$ git clone git@github.com:yourname/climate-analysis.git
 ~~~
 {: .language-bash}
 
+> ## What if I Accidentally Cloned the Repository using HTTPS?
+>
+> As a note, if you've already cloned a repository you can check if you selected **HTTPS** as the access method using, e.g.:
+>
+>{: .bash}
+>~~~
+>$ cd climate-analysis
+>$ git remote -v
+>~~~
+>
+>{: .output}
+>~~~
+>origin	git@github.com:yourname/climate-analysis (fetch)
+>origin	git@github.com:yourname/climate-analysis (push)
+>~~~
+>
+> In this case, we're using SSH. If you see **HTTPS**, you can fix this with the following::
+>
+>{: .bash}
+>~~~
+>$ git remote set-url origin git@github.com:yourname/climate-analysis
+>~~~
+>
+{: .caution}
+
+After you enter the `git clone` command, you should see:
+
 ~~~
 Cloning into 'climate-analysis'...
+The authenticity of host 'github.com (140.82.121.4)' can't be established.
+ECDSA key fingerprint is SHA256:p2QAMXNIC1TJYWeIOttrVc98/R1BUFWu3/LiyKgUfQM.
+ECDSA key fingerprint is MD5:7b:99:81:1e:4c:91:a5:0d:5a:2e:2e:80:13:3f:24:ca.
+Are you sure you want to continue connecting (yes/no)? yes
+~~~
+{: .output}
+
+Then, when you're prompted, continue the connection with `yes` and it will finish downloading:
+
+~~~
 remote: Enumerating objects: 4, done.
 remote: Counting objects: 100% (4/4), done.
 remote: Compressing objects: 100% (4/4), done.
@@ -112,10 +232,7 @@ $ git status
 {: .language-bash}
 
 ~~~
-git status
-On branch main
-Your branch is up-to-date with 'origin/main'.
-
+# On branch main
 nothing to commit, working tree clean
 ~~~
 {: .output}
